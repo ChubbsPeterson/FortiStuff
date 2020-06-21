@@ -2,6 +2,7 @@
 
 ## fgt-multitool.py
 
+```
 Usage: fgt-multitool.py [OPTIONS]
 
   Ex: ./fgt-multitool.py -a address.csv
@@ -18,3 +19,4 @@ Options:
   -w, --webfilter TEXT  [csv] Bulk URL Filter creation
   -z, --script          [api] Upload script to FortiGate
   --help                Show this message and exit.
+```
