@@ -2,6 +2,8 @@
 
 ## fgt-multitool.py
 
+Run ```pip3 install -r requirements.txt``` to install requirements
+
 ```
 Usage: fgt-multitool.py [OPTIONS]
 
