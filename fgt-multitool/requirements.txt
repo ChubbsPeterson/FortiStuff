@@ -1,0 +1,2 @@
+requests
+click >= 7.1    # Must be 7.1 minimum
