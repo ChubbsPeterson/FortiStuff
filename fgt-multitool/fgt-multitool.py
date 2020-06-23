@@ -5,7 +5,7 @@ from datetime import datetime
 import requests  # https://requests.readthedocs.io/en/master/user/quickstart/
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)  # Ignore cert errors
-timestamp = datetime.now().strftime("%m-%d-%Y_%I-%M-%S_%p") # Timestamp for filename
+timestamp = datetime.now().strftime("%m-%d-%Y_%I-%M-%S_%p")  # Timestamp for filename
 """
 Click is used to create a CLI menu
 Run the script to display the help menu with command options
@@ -45,9 +45,9 @@ def addressCreate(address):
             csvfile.readline()  # Skip csv header
             newfile.write("config firewall address\n")
             for line in mycsv:
-                newfile.write('    edit "' + line[0] + '"\n')
-                newfile.write('        set subnet "' + line[1] + '"\n')
-                newfile.write('        set comment "' + line[2] + '"\n')
+                newfile.write('    edit "{}"\n'.format(line[0]))
+                newfile.write('        set subnet "{}"\n'.format(line[1]))
+                newfile.write('        set comment "{}"\n'.format(line[2]))
                 newfile.write('    next\n')
             newfile.write("end\n")
     except FileNotFoundError:
@@ -61,15 +61,15 @@ def servicesCreate(services):
     try:
         with open(services, 'r') as csvfile, open('services-{}.txt'.format(timestamp), 'w') as newfile:
             mycsv = csv.reader(csvfile, delimiter=',')
-            csvfile.readline() # Skip csv header
+            csvfile.readline()  # Skip csv header
             newfile.write("config firewall service custom\n")
             for line in mycsv:
-                newfile.write('    edit "' + line[0] + '"\n')
-                newfile.write('        set comment "' + line[3] + '"\n')
+                newfile.write('    edit "{}"\n'.format(line[0]))
+                newfile.write('        set comment "{}"\n'.format(line[3]))
                 if len(line[1]) != 0:
-                    newfile.write('        set tcp-portrange ' + line[1] + '\n')
+                    newfile.write('        set tcp-portrange {}\n'.format(line[1]))
                 if len(line[2]) != 0:
-                    newfile.write('        set udp-portrange ' + line[2] + '\n')
+                    newfile.write('        set udp-portrange {}\n'.format(line[2]))
                 newfile.write('    next\n')
             newfile.write("end\n")
     except FileNotFoundError:
@@ -83,19 +83,19 @@ def vipsCreate(vips):
     try:
         with open(vips, 'r') as csvfile, open('vips-{}.txt'.format(timestamp), 'w') as newfile:
             mycsv = csv.reader(csvfile, delimiter=',')
-            csvfile.readline() # Skip csv header
+            csvfile.readline()  # Skip csv header
             newfile.write("config firewall vip\n")
             for line in mycsv:
-                newfile.write('    edit "' + line[0] + '"\n')
-                newfile.write('        set comment "' + line[1] + '"\n')
-                newfile.write('        set extintf "' + line[2] + '"\n')
-                newfile.write('        set extip "' + line[3] + '"\n')
-                newfile.write('        set mappedip "' + line[4] + '"\n')
+                newfile.write('    edit "{}"\n'.format(line[0]))
+                newfile.write('        set comment "{}"\n'.format(line[1]))
+                newfile.write('        set extintf "{}"\n'.format(line[2]))
+                newfile.write('        set extip "{}"\n'.format(line[3]))
+                newfile.write('        set mappedip "{}"\n'.format(line[4]))
                 if len(line[5]) != 0:
                     newfile.write('        set portforward enable\n')
-                    newfile.write('        set protocol ' + line[5] + '\n')
-                    newfile.write('        set extport ' + line[6] + '\n')
-                    newfile.write('        set mappedport ' + line[7] + '\n')
+                    newfile.write('        set protocol {}\n'.format(line[5]))
+                    newfile.write('        set extport {}\n'.format(line[6]))
+                    newfile.write('        set mappedport {}\n'.format(line[7]))
                 newfile.write('    next\n')
             newfile.write("end\n")
     except FileNotFoundError:
@@ -109,14 +109,14 @@ def routesCreate(routes):
     try:
         with open(routes, 'r') as csvfile, open('routes-{}.txt'.format(timestamp), 'w') as newfile:
             mycsv = csv.reader(csvfile, delimiter=',')
-            csvfile.readline() # Skip csv header
+            csvfile.readline()  # Skip csv header
             newfile.write("config router static\n")
             for line in mycsv:
                 newfile.write('    edit 0\n')
-                newfile.write('        set dst "' + line[0] + '"\n')
-                newfile.write('        set device "' + line[1] + '"\n')
-                newfile.write('        set gateway "' + line[2] + '"\n')
-                newfile.write('        set comment "' + line[3] + '"\n')
+                newfile.write('        set dst "{}"\n'.format(line[0]))
+                newfile.write('        set device "{}"\n'.format(line[1]))
+                newfile.write('        set gateway "{}"\n'.format(line[2]))
+                newfile.write('        set comment "{}"\n'.format(line[3]))
                 newfile.write('    next\n')
             newfile.write("end\n")
     except FileNotFoundError:
@@ -130,15 +130,15 @@ def webfilterCreate(webfilter):
     try:
         with open(webfilter, 'r') as csvfile, open('wf-url-{}.txt'.format(timestamp), 'w') as newfile:
             mycsv = csv.reader(csvfile, delimiter=',')
-            csvfile.readline() # Skip csv header
+            csvfile.readline()  # Skip csv header
             newfile.write("config webfilter urlfilter\n")
             newfile.write("    edit 1\n")
             newfile.write("        config entries\n")
             for line in mycsv:
                 newfile.write('            edit 0\n')
-                newfile.write('                set type ' + line[1] + '\n')
-                newfile.write('                set url "' + line[0] + '"\n')
-                newfile.write('                set action ' + line[2] + '\n')
+                newfile.write('                set type {}\n'.format(line[1]))
+                newfile.write('                set url "{}"\n'.format(line[0]))
+                newfile.write('                set action {}\n'.format(line[2]))
                 newfile.write('            next\n')
             newfile.write("        end\n")
             newfile.write("    next\n")
@@ -157,24 +157,24 @@ def userCreate(users):
             mycsv = csv.reader(csvfile, delimiter=',')
             if yes_or_no("Include SMS servers (2FA) into the script? "):
                 newfile.write("# Popular SMS Gateways\n# Note: You must have a system e-mail server configured\nconfig system sms-server\n    edit ""ATT""\n        set mail-server ""txt.att.net""\n    next\n    edit ""Boost-Mobile""\n        set mail-server ""smsmyboostmobile.com""\n    next\n    edit ""Cricket""\n       set mail-server ""sms.cricketwireless.net""\n    next\n    edit ""Google-Fi""\n        set mail-server ""msg.fi.google.com""\n    next\n    edit ""Sprint""\n        set mail-server ""messaging.sprintpcs.com""\n    next\n    edit ""T-Mobile""\n        set mail-server ""tmomail.net""\n    next\n    edit ""US-Cellular""\n        set mail-server ""email.uscc.net""\n    next\n    edit ""Verizon""\n        set mail-server ""vtext.com""\n    next\n    edit ""Virgin-Mobile""\n        set mail-server ""vmobl.com""\n    next\n    edit ""Xfinity-Mobile""\n        set mail-server ""vtext.com""\n    next\nend\n\n")
-            csvfile.readline() # Skip csv header
+            csvfile.readline()  # Skip csv header
             newfile.write("config user local\n")
             for line in mycsv:
                 newPass = passGen(12)  # var to generate password, 12 chars long
-                newfile.write('    edit "' + line[0] + '"\n')
+                newfile.write('    edit "{}"\n'.format(line[0]))
                 newfile.write('        set type password\n')
                 if len(line[1]) != 0:
-                    newfile.write('        set passwd ' + line[1] + '\n')
+                    newfile.write('        set passwd {}\n'.format(line[1]))
                 else:
-                    newfile.write('        set passwd ' + newPass + '\n')
+                    newfile.write('        set passwd {}\n'.format(newPass))
                 if len(line[2]) != 0:
-                    newfile.write('        set two-factor "' + line[2] + '"\n')
+                    newfile.write('        set two-factor "{}"\n'.format(line[2]))
                     if len(line[3]) != 0:
-                        newfile.write('        set email-to "' + line[3] + '"\n')
+                        newfile.write('        set email-to "{}"\n'.format(line[3]))
                     if len(line[4]) != 0:
-                        newfile.write('        set sms-phone "' + line[4] + '"\n')
+                        newfile.write('        set sms-phone "{}"\n'.format(line[4]))
                         newfile.write('        set sms-server custom\n')
-                        newfile.write('        set sms-custom-server ' + line[5] + '\n')
+                        newfile.write('        set sms-custom-server {}\n'.format(line[5]))
                 newfile.write('    next\n')
             newfile.write("end\n")
     except FileNotFoundError:
@@ -324,7 +324,7 @@ def fgtScript(ctx, param, value):
         if ":" not in target:  # Default to 8443 if no port is specified
             target = "{}:8443".format(target)
         scriptName = input("Script Name: ")
-        session = fgtLogin(username, password, target) # Session variable for requests
+        session = fgtLogin(username, password, target)  # Session variable for requests
         # Get hostname
         uri = "/api/v2/cmdb/system/global"
         r = session.get("https://{}{}".format(target, uri))
@@ -375,7 +375,7 @@ def fgtShowSecret(ctx, param, value):
         target = input("Host:Port [Default:8443]: ")
         if ":" not in target:  # Default to 8443 if no port is specified
             target = "{}:8443".format(target)
-        secret = input("PSK [w/o 'ENC ']: ")
+        secret = input("PSK: ")
         if "ENC " not in secret:  # Add on ENC if left without
             secret = "ENC {}".format(secret)
         session = fgtLogin(username, password, target)  # Session variable for requests
